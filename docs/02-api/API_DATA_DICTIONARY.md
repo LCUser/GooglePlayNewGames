@@ -19,7 +19,7 @@
 | `released` | string | 是 | 首次发布日期时间戳，UTC | `2026-11-12T23:58:52Z` | `/new`、`/app` | 已验证 |
 | `updated` | string | 是 | 最近更新时间 | UTC 时间戳 | `/new`、`/app` | 已验证 |
 | `removed` | boolean | 是 | 是否已下架 | 布尔值 | `/new` | 已验证 |
-| `removed_seen_at` | 未确认（样本为 null） | 否 | 首次观察到下架的时间 | null | `/new` | 字段存在；非空值类型待验证 |
+| `removed_seen_at` | null（当前样本） | 否 | 首次观察到下架的时间 | null | `/new` | 当前产品不依赖此字段 |
 | `title_lang` | string | 是 | 标题语言 | 字符串 | `/app` | 已验证 |
 | `summary` | string | 是 | 简介 | 已脱敏 | `/app` | 已验证 |
 | `description` | string | 是 | 详情描述 | 已脱敏 | `/app` | 已验证 |
