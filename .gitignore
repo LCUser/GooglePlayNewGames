@@ -5,6 +5,10 @@
 # macOS
 .DS_Store
 
+# Local secrets
+.env.local
+playapi-key.local
+
 ## User settings
 xcuserdata/
 
