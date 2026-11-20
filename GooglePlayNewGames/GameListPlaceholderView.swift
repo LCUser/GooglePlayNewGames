@@ -8,3 +8,9 @@ struct GameListPlaceholderView: View {
         .navigationTitle("Games")
     }
 }
+
+#Preview {
+    NavigationStack {
+        GameListPlaceholderView()
+    }
+}

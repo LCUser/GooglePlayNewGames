@@ -6,3 +6,9 @@ struct GameDetailPlaceholderView: View {
             .navigationTitle("Detail")
     }
 }
+
+#Preview {
+    NavigationStack {
+        GameDetailPlaceholderView()
+    }
+}
