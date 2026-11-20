@@ -13,6 +13,8 @@
 		A10000000000000000000005 /* AppDependenciesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000005 /* AppDependenciesTests.swift */; };
 		A10000000000000000000006 /* CredentialStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000008 /* CredentialStore.swift */; };
 		A10000000000000000000007 /* CredentialStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000009 /* CredentialStoreTests.swift */; };
+		A10000000000000000000008 /* GameAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000010 /* GameAPIClient.swift */; };
+		A10000000000000000000009 /* GameAPIClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000011 /* GameAPIClientTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +27,8 @@
 		B10000000000000000000007 /* GooglePlayNewGamesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GooglePlayNewGamesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B10000000000000000000008 /* CredentialStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialStore.swift; sourceTree = "<group>"; };
 		B10000000000000000000009 /* CredentialStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialStoreTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000010 /* GameAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAPIClient.swift; sourceTree = "<group>"; };
+		B10000000000000000000011 /* GameAPIClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAPIClientTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +54,7 @@
 				B10000000000000000000003 /* GameListPlaceholderView.swift */,
 				B10000000000000000000004 /* GameDetailPlaceholderView.swift */,
 				B10000000000000000000008 /* CredentialStore.swift */,
+				B10000000000000000000010 /* GameAPIClient.swift */,
 			);
 			path = GooglePlayNewGames;
 			sourceTree = "<group>";
@@ -59,6 +64,7 @@
 			children = (
 				B10000000000000000000005 /* AppDependenciesTests.swift */,
 				B10000000000000000000009 /* CredentialStoreTests.swift */,
+				B10000000000000000000011 /* GameAPIClientTests.swift */,
 			);
 			path = GooglePlayNewGamesTests;
 			sourceTree = "<group>";
@@ -159,6 +165,7 @@
 				A10000000000000000000003 /* GameListPlaceholderView.swift in Sources */,
 				A10000000000000000000004 /* GameDetailPlaceholderView.swift in Sources */,
 				A10000000000000000000006 /* CredentialStore.swift in Sources */,
+				A10000000000000000000008 /* GameAPIClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,6 +175,7 @@
 			files = (
 				A10000000000000000000005 /* AppDependenciesTests.swift in Sources */,
 				A10000000000000000000007 /* CredentialStoreTests.swift in Sources */,
+				A10000000000000000000009 /* GameAPIClientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

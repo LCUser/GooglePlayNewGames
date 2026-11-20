@@ -48,7 +48,7 @@ final class CredentialStoreTests: XCTestCase {
     }
 }
 
-private final class MemorySecureDataStore: SecureDataStoring {
+private final class MemorySecureDataStore: SecureDataStoring, @unchecked Sendable {
     var values: [String: Data] = [:]
 
     func read(account: String) throws -> Data? {

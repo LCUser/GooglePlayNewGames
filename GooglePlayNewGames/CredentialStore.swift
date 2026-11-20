@@ -9,12 +9,12 @@ enum CredentialStoreError: Error, Equatable {
     case encryptionFailure
 }
 
-protocol CredentialStoring {
+protocol CredentialStoring: Sendable {
     func save(_ credential: String) throws
     func load() throws -> String?
 }
 
-protocol SecureDataStoring {
+protocol SecureDataStoring: Sendable {
     func read(account: String) throws -> Data?
     func write(_ data: Data, account: String) throws
 }
