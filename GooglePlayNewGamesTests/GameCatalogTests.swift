@@ -34,24 +34,20 @@ final class GameCatalogTests: XCTestCase {
         XCTAssertEqual(actualDuration, expectedDuration, accuracy: 0.001)
     }
 
-    func testLoadFiltersDeduplicatesAndSortsBothCategories() async throws {
+    func testLoadRequestsOnlyCasualOnceThenFiltersAndSorts() async throws {
         let timeZone = try XCTUnwrap(TimeZone(identifier: "Asia/Shanghai"))
         let now = try XCTUnwrap(ISO8601DateFormatter().date(from: "2026-11-20T12:00:00Z"))
         let start = try XCTUnwrap(ISO8601DateFormatter().date(from: "2026-11-04T16:00:00Z"))
         let end = try XCTUnwrap(ISO8601DateFormatter().date(from: "2026-11-13T16:00:00Z"))
-        let puzzle = [
-            summary("old", released: start.addingTimeInterval(-1), category: .puzzle),
-            summary("duplicate", released: start.addingTimeInterval(100), category: .puzzle),
-            summary("same-b", released: start.addingTimeInterval(200), category: .puzzle),
-            summary("end", released: end, category: .puzzle)
-        ]
         let casual = [
             summary("duplicate", released: start.addingTimeInterval(300), category: .casual),
             summary("same-a", released: start.addingTimeInterval(200), category: .casual),
-            summary("last-valid", released: end.addingTimeInterval(-1), category: .casual)
+            summary("same-b", released: start.addingTimeInterval(200), category: .casual),
+            summary("last-valid", released: end.addingTimeInterval(-1), category: .casual),
+            summary("old", released: start.addingTimeInterval(-1), category: .casual),
+            summary("end", released: end, category: .casual)
         ]
         let fetcher = StubPageFetcher(responses: [
-            PageKey(category: .puzzle, page: 1): page(category: .puzzle, results: puzzle),
             PageKey(category: .casual, page: 1): page(category: .casual, results: casual)
         ])
         let catalog = GameCatalog(
@@ -66,60 +62,41 @@ final class GameCatalogTests: XCTestCase {
         XCTAssertEqual(games.first(where: { $0.id == "duplicate" })?.categoryID, GameCategory.casual.rawValue)
         XCTAssertEqual(Set(games.map(\.id)).count, games.count)
         let requests = await fetcher.requests()
-        XCTAssertEqual(Set(requests.map(\.category)), Set(GameCategory.allCases))
+        XCTAssertEqual(requests.count, 1)
+        XCTAssertEqual(requests.first?.category, .casual)
+        XCTAssertEqual(requests.first?.page, 1)
         XCTAssertTrue(requests.allSatisfy { $0.since == "2026-11-03" && $0.until == "2026-11-14" })
     }
 
-    func testPaginationIsSequentialAndRejectsInconsistentMetadata() async {
+    func testLoadsOnlyCasualFirstPageWhenMorePagesExist() async {
         let timeZone = TimeZone(secondsFromGMT: 0)!
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+        let released = now.addingTimeInterval(-10 * 24 * 60 * 60)
         let records = (0..<101).map {
-            summary("puzzle-\($0)", released: Date(timeIntervalSince1970: 1_800_000_000), category: .puzzle)
+            summary("casual-\($0)", released: released, category: .casual)
         }
         let fetcher = StubPageFetcher(responses: [
-            PageKey(category: .puzzle, page: 1): page(category: .puzzle, results: Array(records.prefix(100)), total: 101),
-            PageKey(category: .puzzle, page: 2): page(category: .puzzle, number: 2, results: Array(records.suffix(1)), total: 101),
-            PageKey(category: .casual, page: 1): page(category: .casual, results: [], total: 0)
+            PageKey(category: .casual, page: 1): page(category: .casual, results: Array(records.prefix(100)), total: 101),
+            PageKey(category: .casual, page: 2): page(category: .casual, number: 2, results: Array(records.suffix(1)), total: 101)
         ])
         let catalog = GameCatalog(pageFetcher: fetcher, timeZone: timeZone)
 
         do {
-            let games = try await catalog.loadGames(now: Date(timeIntervalSince1970: 1_800_000_000))
-            XCTAssertTrue(games.isEmpty)
+            let games = try await catalog.loadGames(now: now)
+            XCTAssertEqual(games.count, 100)
         } catch {
             XCTFail("Unexpected error: \(error)")
         }
 
-        let requests = await fetcher.requests().filter { $0.category == .puzzle }
-        XCTAssertEqual(requests.map(\.page), [1, 2])
-
-        let inconsistentFetcher = StubPageFetcher(responses: [
-            PageKey(category: .puzzle, page: 1): page(category: .puzzle, results: Array(records.prefix(100)), total: 101),
-            PageKey(category: .puzzle, page: 2): GamePageDTO(
-                results: Array(records.suffix(1)),
-                total: 102,
-                page: 2,
-                per: 100,
-                pages: 2
-            ),
-            PageKey(category: .casual, page: 1): page(category: .casual, results: [], total: 0)
-        ])
-        let inconsistentCatalog = GameCatalog(pageFetcher: inconsistentFetcher, timeZone: timeZone)
-        do {
-            _ = try await inconsistentCatalog.loadGames(now: Date(timeIntervalSince1970: 1_800_000_000))
-            XCTFail("Expected inconsistent pagination metadata to fail")
-        } catch {
-            XCTAssertEqual(error as? GameCatalogError, .invalidPagination)
-        }
+        let requests = await fetcher.requests()
+        XCTAssertEqual(requests.count, 1)
+        XCTAssertEqual(requests.first?.category, .casual)
+        XCTAssertEqual(requests.first?.page, 1)
     }
 
-    func testAnyCategoryFailureFailsTheWholeLoadAndRejectsOverLimit() async {
+    func testCasualRequestFailureFailsTheLoad() async {
         let failingFetcher = StubPageFetcher(
-            responses: [
-                PageKey(category: .puzzle, page: 1): page(
-                    category: .puzzle,
-                    results: [summary("partial", released: Date(), category: .puzzle)]
-                )
-            ],
+            responses: [:],
             failures: [PageKey(category: .casual, page: 1)]
         )
         let catalog = GameCatalog(pageFetcher: failingFetcher, timeZone: TimeZone(secondsFromGMT: 0)!)
@@ -129,32 +106,12 @@ final class GameCatalogTests: XCTestCase {
         } catch {
             XCTAssertEqual(error as? GameAPIError, .transport)
         }
-
-        let overLimitFetcher = StubPageFetcher(responses: [
-            PageKey(category: .puzzle, page: 1): GamePageDTO(
-                results: (0..<100).map {
-                    summary("over-\($0)", released: Date(), category: .puzzle)
-                },
-                total: 10_001,
-                page: 1,
-                per: 100,
-                pages: 100
-            ),
-            PageKey(category: .casual, page: 1): page(category: .casual, results: [], total: 0)
-        ])
-        let overLimitCatalog = GameCatalog(pageFetcher: overLimitFetcher, timeZone: TimeZone(secondsFromGMT: 0)!)
-        do {
-            _ = try await overLimitCatalog.loadGames(now: Date())
-            XCTFail("Expected the API result limit to fail the whole load")
-        } catch {
-            XCTAssertEqual(error as? GameCatalogError, .resultLimitExceeded)
-        }
     }
 
     func testCancellationAndSupersededLoadCannotReturnResults() async throws {
         let timeZone = TimeZone(secondsFromGMT: 0)!
         let oldNow = try XCTUnwrap(ISO8601DateFormatter().date(from: "2026-11-20T12:00:00Z"))
-        let fetcher = SupersedingPageFetcher(blockedSince: "2026-11-04")
+        let fetcher = SupersedingPageFetcher()
         let catalog = GameCatalog(pageFetcher: fetcher, timeZone: timeZone)
         let oldLoad = Task {
             try await catalog.loadGames(now: oldNow)
@@ -174,7 +131,6 @@ final class GameCatalogTests: XCTestCase {
 
         let immediateCatalog = GameCatalog(
             pageFetcher: StubPageFetcher(responses: [
-                PageKey(category: .puzzle, page: 1): page(category: .puzzle, results: [], total: 0),
                 PageKey(category: .casual, page: 1): page(category: .casual, results: [], total: 0)
             ]),
             timeZone: timeZone
@@ -222,8 +178,6 @@ final class GameCatalogTests: XCTestCase {
 private struct PageKey: Hashable, Sendable {
     let category: GameCategory
     let page: Int
-    var since: String = ""
-    var until: String = ""
 }
 
 private actor StubPageFetcher: GamePageFetching {
@@ -238,12 +192,10 @@ private actor StubPageFetcher: GamePageFetching {
 
     func fetchPage(
         category: GameCategory,
-        since: String,
-        until: String,
         page: Int,
         per: Int
     ) async throws -> GamePageDTO {
-        let key = PageKey(category: category, page: page, since: since, until: until)
+        let key = PageKey(category: category, page: page)
         recordedRequests.append(key)
         let responseKey = PageKey(category: category, page: page)
         if failures.contains(responseKey) { throw GameAPIError.transport }
@@ -259,37 +211,28 @@ private actor StubPageFetcher: GamePageFetching {
 }
 
 private actor SupersedingPageFetcher: GamePageFetching {
-    private let blockedSince: String
     private var blockedRequests = 0
     private var waitingRequests: [CheckedContinuation<GamePageDTO, Error>] = []
     private var startedContinuation: CheckedContinuation<Void, Never>?
 
-    init(blockedSince: String) {
-        self.blockedSince = blockedSince
-    }
-
     func fetchPage(
         category: GameCategory,
-        since: String,
-        until: String,
         page: Int,
         per: Int
     ) async throws -> GamePageDTO {
-        guard since == blockedSince else {
+        guard page == 1, category == .casual, blockedRequests == 0 else {
             return GamePageDTO(results: [], total: 0, page: 1, per: 100, pages: 0)
         }
         return try await withCheckedThrowingContinuation { continuation in
             blockedRequests += 1
             waitingRequests.append(continuation)
-            if blockedRequests == 2 {
-                startedContinuation?.resume()
-                startedContinuation = nil
-            }
+            startedContinuation?.resume()
+            startedContinuation = nil
         }
     }
 
     func waitUntilOldLoadIsBlocked() async {
-        guard blockedRequests < 2 else { return }
+        guard blockedRequests < 1 else { return }
         await withCheckedContinuation { continuation in
             startedContinuation = continuation
         }

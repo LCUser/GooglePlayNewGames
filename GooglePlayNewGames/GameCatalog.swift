@@ -1,4 +1,5 @@
 import Foundation
+import os
 
 struct ReleaseDateWindow: Equatable, Sendable {
     let startInclusive: Date
@@ -54,12 +55,14 @@ protocol GameCatalogProviding: Sendable {
 enum GameCatalogError: Error, Equatable {
     case invalidDateWindow
     case invalidPagination
-    case resultLimitExceeded
 }
 
 actor GameCatalog: GameCatalogProviding {
     private static let pageSize = 100
-    private static let maximumResults = 10_000
+    private static let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier ?? "GooglePlayNewGames",
+        category: "GameCatalog"
+    )
 
     private let pageFetcher: any GamePageFetching
     private let calendar: Calendar
@@ -81,30 +84,20 @@ actor GameCatalog: GameCatalogProviding {
         let generation = loadGeneration
         try Task.checkCancellation()
 
-        guard let window = ReleaseDateWindow(now: now, calendar: calendar, timeZone: timeZone),
-              let apiRange = window.apiDateRange() else {
+        guard let window = ReleaseDateWindow(now: now, calendar: calendar, timeZone: timeZone) else {
             throw GameCatalogError.invalidDateWindow
         }
 
         do {
-            async let puzzle = Self.fetchAllPages(
+            let casual = try await Self.fetchFirstPage(
                 using: pageFetcher,
-                category: .puzzle,
-                since: apiRange.since,
-                until: apiRange.until
+                category: .casual
             )
-            async let casual = Self.fetchAllPages(
-                using: pageFetcher,
-                category: .casual,
-                since: apiRange.since,
-                until: apiRange.until
-            )
-            let combined = try await puzzle + casual
             try Task.checkCancellation()
             guard generation == loadGeneration else { throw CancellationError() }
 
             var uniqueByID: [String: GameSummary] = [:]
-            for item in combined where window.contains(item.released) {
+            for item in casual where window.contains(item.released) {
                 guard let iconURL = URL(string: item.icon), iconURL.scheme == "https" else {
                     throw GameAPIError.contractViolation
                 }
@@ -124,30 +117,51 @@ actor GameCatalog: GameCatalogProviding {
                     uniqueByID[item.id] = summary
                 }
             }
-            return uniqueByID.values.sorted {
+            let games = uniqueByID.values.sorted {
                 if $0.releasedAt != $1.releasedAt {
                     return $0.releasedAt > $1.releasedAt
                 }
                 return $0.id < $1.id
             }
+            Self.logger.info("Game list load succeeded items=\(games.count, privacy: .public)")
+            return games
         } catch {
             if generation != loadGeneration || Task.isCancelled {
+                Self.logger.info("Game list load cancelled")
                 throw CancellationError()
             }
+            Self.logger.error("Game list load failed reason=\(Self.diagnosticCategory(for: error), privacy: .public)")
             throw error
         }
     }
 
-    private nonisolated static func fetchAllPages(
+    private nonisolated static func diagnosticCategory(for error: Error) -> String {
+        if let error = error as? GameAPIError {
+            switch error {
+            case .missingCredential: return "missingCredential"
+            case .authentication: return "authentication"
+            case .notFound: return "notFound"
+            case .httpStatus: return "httpStatus"
+            case .transport: return "transport"
+            case .decoding: return "decoding"
+            case .contractViolation: return "contractViolation"
+            }
+        }
+        if let error = error as? GameCatalogError {
+            switch error {
+            case .invalidDateWindow: return "invalidDateWindow"
+            case .invalidPagination: return "invalidPagination"
+            }
+        }
+        return "unexpected"
+    }
+
+    private nonisolated static func fetchFirstPage(
         using pageFetcher: any GamePageFetching,
-        category: GameCategory,
-        since: String,
-        until: String
+        category: GameCategory
     ) async throws -> [GameSummaryDTO] {
         let first = try await pageFetcher.fetchPage(
             category: category,
-            since: since,
-            until: until,
             page: 1,
             per: pageSize
         )
@@ -155,44 +169,10 @@ actor GameCatalog: GameCatalogProviding {
         guard first.page == 1,
               first.per == pageSize,
               first.total >= 0,
-              first.total <= maximumResults else {
-            if first.total > maximumResults {
-                throw GameCatalogError.resultLimitExceeded
-            }
-            throw GameCatalogError.invalidPagination
-        }
-        let expectedPages = first.total == 0 ? 0 : (first.total + pageSize - 1) / pageSize
-        guard first.pages == expectedPages,
+              (first.total == 0 ? first.pages == 0 : first.pages >= 1),
               first.results.count == min(pageSize, first.total) else {
             throw GameCatalogError.invalidPagination
         }
-
-        var results = first.results
-        guard expectedPages > 1 else { return results }
-
-        for pageNumber in 2...expectedPages {
-            try Task.checkCancellation()
-            let page = try await pageFetcher.fetchPage(
-                category: category,
-                since: since,
-                until: until,
-                page: pageNumber,
-                per: pageSize
-            )
-            try Task.checkCancellation()
-            let expectedCount = min(pageSize, first.total - (pageNumber - 1) * pageSize)
-            guard page.page == pageNumber,
-                  page.per == first.per,
-                  page.total == first.total,
-                  page.pages == first.pages,
-                  page.results.count == expectedCount else {
-                throw GameCatalogError.invalidPagination
-            }
-            results.append(contentsOf: page.results)
-        }
-        guard results.count == first.total else {
-            throw GameCatalogError.invalidPagination
-        }
-        return results
+        return first.results
     }
 }

@@ -23,7 +23,7 @@
 | `GameDetail` | `id`、`title`、`summary`、`description`、`recentChanges?`、`releasedAt`，以及经批准要展示且已验证的字段 | 不可变领域值；可空值显式可选 | 详情页面模型；`url` 不进入展示模型或导航接口 |
 | `CategoryID` | `GAME_PUZZLE`、`GAME_CASUAL` | 封闭枚举；未知值不可静默扩展 | Gate 3 需求基线 |
 | `ReleaseDateWindow` | `startInclusive`、`endExclusive` | UTC 绝对时刻；前者含、后者不含 | 由设备本地 `Calendar` 日界转换得出 |
-| `PagedListResponseDTO` | `total`、`per`、结果集合 | 以实测响应结构实现；`page` 请求参数 | API-TC-003 至 011 记录了 `total`/`per` 及分页请求；完整终止契约须保持可验证 |
+| `GamePageDTO` | `total`、`page`、`per`、`pages`、结果集合 | `/new` 第一页响应及服务端分页元数据 | App 仅请求 Casual 的 `page=1`、`per=100`；仅验证并使用第一页，不追取后续页 |
 
 开发者、安装量、评分、状态、定价、内容分级及媒体等对象在 API 字典中只有容器级证据、子字段未补充。不得在 Gate 4 文档中猜测子属性或格式。若产品 UI 需要这些对象的子字段，应先确认其真实键、类型、nullability，再纳入模型。
 

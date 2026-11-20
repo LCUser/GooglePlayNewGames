@@ -3,7 +3,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 KEY_FILE="$ROOT_DIR/playapi-key.local"
-BUNDLE_ID="com.local.GooglePlayNewGames"
+BUNDLE_ID="com.vandang.hoang"
 
 if [[ $# -ne 2 || ( "$1" != "simulator" && "$1" != "device" ) ]]; then
     printf 'Usage: %s simulator|device <device-identifier>\n' "$0" >&2

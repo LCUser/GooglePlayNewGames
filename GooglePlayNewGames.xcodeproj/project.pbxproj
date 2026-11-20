@@ -1,14 +1,15 @@
 // !$*UTF8*$!
 {
 	archiveVersion = 1;
-	classes = {};
+	classes = {
+	};
 	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		A10000000000000000000001 /* GooglePlayNewGamesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000001 /* GooglePlayNewGamesApp.swift */; };
 		A10000000000000000000002 /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000002 /* AppDependencies.swift */; };
-		A10000000000000000000003 /* GameListPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000003 /* GameListPlaceholderView.swift */; };
+		A10000000000000000000003 /* GameListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000003 /* GameListView.swift */; };
 		A10000000000000000000004 /* GameDetailPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000004 /* GameDetailPlaceholderView.swift */; };
 		A10000000000000000000005 /* AppDependenciesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000005 /* AppDependenciesTests.swift */; };
 		A10000000000000000000006 /* CredentialStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000008 /* CredentialStore.swift */; };
@@ -17,12 +18,23 @@
 		A10000000000000000000009 /* GameAPIClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000011 /* GameAPIClientTests.swift */; };
 		A1000000000000000000000A /* GameCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000012 /* GameCatalog.swift */; };
 		A1000000000000000000000B /* GameCatalogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000013 /* GameCatalogTests.swift */; };
+		A1000000000000000000000C /* GameListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000014 /* GameListViewModelTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		H10000000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = I10000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E10000000000000000000001;
+			remoteInfo = GooglePlayNewGames;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		B10000000000000000000001 /* GooglePlayNewGamesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GooglePlayNewGamesApp.swift; sourceTree = "<group>"; };
 		B10000000000000000000002 /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
-		B10000000000000000000003 /* GameListPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListPlaceholderView.swift; sourceTree = "<group>"; };
+		B10000000000000000000003 /* GameListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListView.swift; sourceTree = "<group>"; };
 		B10000000000000000000004 /* GameDetailPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailPlaceholderView.swift; sourceTree = "<group>"; };
 		B10000000000000000000005 /* AppDependenciesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependenciesTests.swift; sourceTree = "<group>"; };
 		B10000000000000000000006 /* GooglePlayNewGames.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GooglePlayNewGames.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -33,11 +45,24 @@
 		B10000000000000000000011 /* GameAPIClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAPIClientTests.swift; sourceTree = "<group>"; };
 		B10000000000000000000012 /* GameCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCatalog.swift; sourceTree = "<group>"; };
 		B10000000000000000000013 /* GameCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCatalogTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000014 /* GameListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListViewModelTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C10000000000000000000001 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
-		C10000000000000000000002 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		C10000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C10000000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -55,7 +80,7 @@
 			children = (
 				B10000000000000000000001 /* GooglePlayNewGamesApp.swift */,
 				B10000000000000000000002 /* AppDependencies.swift */,
-				B10000000000000000000003 /* GameListPlaceholderView.swift */,
+				B10000000000000000000003 /* GameListView.swift */,
 				B10000000000000000000004 /* GameDetailPlaceholderView.swift */,
 				B10000000000000000000008 /* CredentialStore.swift */,
 				B10000000000000000000010 /* GameAPIClient.swift */,
@@ -71,6 +96,7 @@
 				B10000000000000000000009 /* CredentialStoreTests.swift */,
 				B10000000000000000000011 /* GameAPIClientTests.swift */,
 				B10000000000000000000013 /* GameCatalogTests.swift */,
+				B10000000000000000000014 /* GameListViewModelTests.swift */,
 			);
 			path = GooglePlayNewGamesTests;
 			sourceTree = "<group>";
@@ -95,8 +121,10 @@
 				C10000000000000000000001 /* Frameworks */,
 				C10000000000000000000005 /* Resources */,
 			);
-			buildRules = ();
-			dependencies = ();
+			buildRules = (
+			);
+			dependencies = (
+			);
 			name = GooglePlayNewGames;
 			productName = GooglePlayNewGames;
 			productReference = B10000000000000000000006 /* GooglePlayNewGames.app */;
@@ -110,24 +138,17 @@
 				C10000000000000000000002 /* Frameworks */,
 				C10000000000000000000006 /* Resources */,
 			);
-			buildRules = ();
-			dependencies = (G10000000000000000000001 /* PBXTargetDependency */,);
+			buildRules = (
+			);
+			dependencies = (
+				G10000000000000000000001 /* PBXTargetDependency */,
+			);
 			name = GooglePlayNewGamesTests;
 			productName = GooglePlayNewGamesTests;
 			productReference = B10000000000000000000007 /* GooglePlayNewGamesTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
-
-/* Begin PBXContainerItemProxy section */
-		H10000000000000000000001 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = I10000000000000000000001 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E10000000000000000000001;
-			remoteInfo = GooglePlayNewGames;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXProject section */
 		I10000000000000000000001 /* Project object */ = {
@@ -136,15 +157,23 @@
 				BuildIndependentTargetsInParallel = 1;
 				LastUpgradeCheck = 1610;
 				TargetAttributes = {
-					E10000000000000000000001 = {CreatedOnToolsVersion = 16.1; };
-					E10000000000000000000002 = {CreatedOnToolsVersion = 16.1; TestTargetID = E10000000000000000000001; };
+					E10000000000000000000001 = {
+						CreatedOnToolsVersion = 16.1;
+					};
+					E10000000000000000000002 = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = E10000000000000000000001;
+					};
 				};
 			};
 			buildConfigurationList = F10000000000000000000001 /* Build configuration list for PBXProject "GooglePlayNewGames" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
-			knownRegions = (en, Base);
+			knownRegions = (
+				en,
+				Base,
+			);
 			mainGroup = D10000000000000000000001;
 			productRefGroup = D10000000000000000000004 /* Products */;
 			projectDirPath = "";
@@ -157,8 +186,20 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C10000000000000000000005 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
-		C10000000000000000000006 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		C10000000000000000000005 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C10000000000000000000006 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -168,7 +209,7 @@
 			files = (
 				A10000000000000000000001 /* GooglePlayNewGamesApp.swift in Sources */,
 				A10000000000000000000002 /* AppDependencies.swift in Sources */,
-				A10000000000000000000003 /* GameListPlaceholderView.swift in Sources */,
+				A10000000000000000000003 /* GameListView.swift in Sources */,
 				A10000000000000000000004 /* GameDetailPlaceholderView.swift in Sources */,
 				A10000000000000000000006 /* CredentialStore.swift in Sources */,
 				A10000000000000000000008 /* GameAPIClient.swift in Sources */,
@@ -184,6 +225,7 @@
 				A10000000000000000000007 /* CredentialStoreTests.swift in Sources */,
 				A10000000000000000000009 /* GameAPIClientTests.swift in Sources */,
 				A1000000000000000000000B /* GameCatalogTests.swift in Sources */,
+				A1000000000000000000000C /* GameListViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,24 +234,148 @@
 /* Begin PBXTargetDependency section */
 		G10000000000000000000001 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E10000000000000000000001;
-			targetProxy = H10000000000000000000001;
+			target = E10000000000000000000001 /* GooglePlayNewGames */;
+			targetProxy = H10000000000000000000001 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		F10000000000000000000004 /* Debug project */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; IPHONEOS_DEPLOYMENT_TARGET = 16.0; SDKROOT = iphoneos; SWIFT_VERSION = 6.0; }; name = Debug; };
-		F10000000000000000000005 /* Release project */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; IPHONEOS_DEPLOYMENT_TARGET = 16.0; SDKROOT = iphoneos; SWIFT_VERSION = 6.0; }; name = Release; };
-		F10000000000000000000006 /* Debug app */ = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGNING_ALLOWED = NO; CURRENT_PROJECT_VERSION = 1; ENABLE_TESTABILITY = YES; GENERATE_INFOPLIST_FILE = YES; IPHONEOS_DEPLOYMENT_TARGET = 16.0; MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = com.local.GooglePlayNewGames; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; SWIFT_STRICT_CONCURRENCY = complete; SWIFT_VERSION = 6.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Debug; };
-		F10000000000000000000007 /* Release app */ = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGNING_ALLOWED = NO; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = YES; IPHONEOS_DEPLOYMENT_TARGET = 16.0; MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = com.local.GooglePlayNewGames; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SWIFT_STRICT_CONCURRENCY = complete; SWIFT_VERSION = 6.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Release; };
-		F10000000000000000000008 /* Debug tests */ = {isa = XCBuildConfiguration; buildSettings = {BUNDLE_LOADER = "$(TEST_HOST)"; CODE_SIGNING_ALLOWED = NO; GENERATE_INFOPLIST_FILE = YES; IPHONEOS_DEPLOYMENT_TARGET = 16.0; PRODUCT_BUNDLE_IDENTIFIER = com.local.GooglePlayNewGamesTests; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SWIFT_STRICT_CONCURRENCY = complete; SWIFT_VERSION = 6.0; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GooglePlayNewGames.app/GooglePlayNewGames"; }; name = Debug; };
-		F10000000000000000000009 /* Release tests */ = {isa = XCBuildConfiguration; buildSettings = {BUNDLE_LOADER = "$(TEST_HOST)"; CODE_SIGNING_ALLOWED = NO; GENERATE_INFOPLIST_FILE = YES; IPHONEOS_DEPLOYMENT_TARGET = 16.0; PRODUCT_BUNDLE_IDENTIFIER = com.local.GooglePlayNewGamesTests; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SWIFT_STRICT_CONCURRENCY = complete; SWIFT_VERSION = 6.0; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GooglePlayNewGames.app/GooglePlayNewGames"; }; name = Release; };
+		F10000000000000000000004 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		F10000000000000000000005 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		F10000000000000000000006 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3AU9SUWT69;
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vandang.hoang;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = vandanghoangTest;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F10000000000000000000007 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 3AU9SUWT69;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.vandang.hoang;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = vandanghoangTest;
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		F10000000000000000000008 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGNING_ALLOWED = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.GooglePlayNewGamesTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GooglePlayNewGames.app/GooglePlayNewGames";
+			};
+			name = Debug;
+		};
+		F10000000000000000000009 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGNING_ALLOWED = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.GooglePlayNewGamesTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/GooglePlayNewGames.app/GooglePlayNewGames";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		F10000000000000000000001 /* Build configuration list for PBXProject */ = {isa = XCConfigurationList; buildConfigurations = (F10000000000000000000004 /* Debug project */, F10000000000000000000005 /* Release project */); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
-		F10000000000000000000002 /* Build configuration list for PBXNativeTarget "GooglePlayNewGames" */ = {isa = XCConfigurationList; buildConfigurations = (F10000000000000000000006 /* Debug app */, F10000000000000000000007 /* Release app */); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
-		F10000000000000000000003 /* Build configuration list for PBXNativeTarget "GooglePlayNewGamesTests" */ = {isa = XCConfigurationList; buildConfigurations = (F10000000000000000000008 /* Debug tests */, F10000000000000000000009 /* Release tests */); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		F10000000000000000000001 /* Build configuration list for PBXProject "GooglePlayNewGames" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F10000000000000000000004 /* Debug */,
+				F10000000000000000000005 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F10000000000000000000002 /* Build configuration list for PBXNativeTarget "GooglePlayNewGames" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F10000000000000000000006 /* Debug */,
+				F10000000000000000000007 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F10000000000000000000003 /* Build configuration list for PBXNativeTarget "GooglePlayNewGamesTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F10000000000000000000008 /* Debug */,
+				F10000000000000000000009 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 	};
 	rootObject = I10000000000000000000001 /* Project object */;

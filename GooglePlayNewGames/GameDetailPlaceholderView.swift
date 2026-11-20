@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct GameDetailPlaceholderView: View {
+    let gameID: String
+
     var body: some View {
         Text("Game detail")
             .navigationTitle("Detail")
@@ -9,6 +11,6 @@ struct GameDetailPlaceholderView: View {
 
 #Preview {
     NavigationStack {
-        GameDetailPlaceholderView()
+        GameDetailPlaceholderView(gameID: "preview.game")
     }
 }

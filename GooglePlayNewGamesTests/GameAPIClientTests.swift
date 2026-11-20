@@ -3,26 +3,25 @@ import XCTest
 @testable import GooglePlayNewGames
 
 final class GameAPIClientTests: XCTestCase {
-    func testListUsesFixedHostAllowedCategoryAndAuthenticationHeader() async throws {
-        for category in GameCategory.allCases {
-            let transport = StubTransport(body: listBody(category: category.rawValue), status: 200)
-            let client = GameAPIClient(credentialStore: StubCredentialStore(value: "fake-key"), transport: transport)
-            let page = try await client.fetchPage(
-                category: category,
-                since: "2026-11-03",
-                until: "2026-11-14",
-                page: 1,
-                per: 100
-            )
-            let request = try XCTUnwrap(transport.lastRequest)
-            let components = try XCTUnwrap(URLComponents(url: request.url!, resolvingAgainstBaseURL: false))
-            XCTAssertEqual(components.host, "playapi.info")
-            XCTAssertEqual(components.scheme, "https")
-            XCTAssertEqual(components.path, "/api/v1/new")
-            XCTAssertEqual(Dictionary(uniqueKeysWithValues: (components.queryItems ?? []).map { ($0.name, $0.value!) })["category"], category.rawValue)
-            XCTAssertEqual(request.value(forHTTPHeaderField: "X-API-Key"), "fake-key")
-            XCTAssertEqual(page.results.first?.category.id, category.rawValue)
-        }
+    func testListUsesSingleCasualFirstPageRequestAndAuthenticationHeader() async throws {
+        let transport = StubTransport(body: listBody(category: GameCategory.casual.rawValue), status: 200)
+        let client = GameAPIClient(credentialStore: StubCredentialStore(value: "fake-key"), transport: transport)
+        let page = try await client.fetchPage(
+            category: .casual,
+            page: 1,
+            per: 100
+        )
+        let request = try XCTUnwrap(transport.lastRequest)
+        let components = try XCTUnwrap(URLComponents(url: request.url!, resolvingAgainstBaseURL: false))
+        XCTAssertEqual(components.host, "playapi.info")
+        XCTAssertEqual(components.scheme, "https")
+        XCTAssertEqual(components.path, "/api/v1/new")
+        XCTAssertEqual(
+            Dictionary(uniqueKeysWithValues: (components.queryItems ?? []).map { ($0.name, $0.value!) }),
+            ["category": "GAME_CASUAL", "page": "1", "per": "100"]
+        )
+        XCTAssertEqual(request.value(forHTTPHeaderField: "X-API-Key"), "fake-key")
+        XCTAssertEqual(page.results.first?.category.id, GameCategory.casual.rawValue)
     }
 
     func testAuthenticationFailureIsClassifiedWithoutLeakingCredential() async {
@@ -33,7 +32,7 @@ final class GameAPIClientTests: XCTestCase {
         )
 
         do {
-            _ = try await client.fetchPage(category: .casual, since: "a", until: "b", page: 1, per: 1)
+            _ = try await client.fetchPage(category: .casual, page: 1, per: 1)
             XCTFail("Expected authentication error")
         } catch {
             XCTAssertEqual(error as? GameAPIError, .authentication)
@@ -46,7 +45,7 @@ final class GameAPIClientTests: XCTestCase {
         let invalidCategory = Data(#"{"ok":true,"total":1,"page":1,"per":1,"pages":1,"results":[{"id":"x","title":"X","icon":"https://example.com/i","category":{"id":"GAME_ARCADE","name":"Arcade"},"released":"2026-11-12T00:00:00Z"}]}"#.utf8)
         let invalidClient = GameAPIClient(credentialStore: StubCredentialStore(value: "key"), transport: StubTransport(body: invalidCategory, status: 200))
         do {
-            _ = try await invalidClient.fetchPage(category: .puzzle, since: "a", until: "b", page: 1, per: 1)
+            _ = try await invalidClient.fetchPage(category: .puzzle, page: 1, per: 1)
             XCTFail("Expected contract violation")
         } catch {
             XCTAssertEqual(error as? GameAPIError, .contractViolation)
@@ -55,7 +54,7 @@ final class GameAPIClientTests: XCTestCase {
         let wrongType = Data(#"{"ok":true,"total":"one","page":1,"per":1,"pages":1,"results":[]}"#.utf8)
         let wrongTypeClient = GameAPIClient(credentialStore: StubCredentialStore(value: "key"), transport: StubTransport(body: wrongType, status: 200))
         do {
-            _ = try await wrongTypeClient.fetchPage(category: .puzzle, since: "a", until: "b", page: 1, per: 1)
+            _ = try await wrongTypeClient.fetchPage(category: .puzzle, page: 1, per: 1)
             XCTFail("Expected decoding error")
         } catch {
             XCTAssertEqual(error as? GameAPIError, .decoding)
@@ -63,7 +62,7 @@ final class GameAPIClientTests: XCTestCase {
 
         let missingFieldClient = GameAPIClient(credentialStore: StubCredentialStore(value: "key"), transport: StubTransport(body: Data(#"{"ok":true,"results":[]}"#.utf8), status: 200))
         do {
-            _ = try await missingFieldClient.fetchPage(category: .puzzle, since: "a", until: "b", page: 1, per: 1)
+            _ = try await missingFieldClient.fetchPage(category: .puzzle, page: 1, per: 1)
             XCTFail("Expected contract violation")
         } catch {
             XCTAssertEqual(error as? GameAPIError, .contractViolation)
@@ -107,7 +106,7 @@ final class GameAPIClientTests: XCTestCase {
         let transport = StubTransport(body: listBody(), status: 200, failure: URLError(.cancelled))
         let client = GameAPIClient(credentialStore: StubCredentialStore(value: "key"), transport: transport)
         do {
-            _ = try await client.fetchPage(category: .puzzle, since: "a", until: "b", page: 1, per: 1)
+            _ = try await client.fetchPage(category: .puzzle, page: 1, per: 1)
             XCTFail("Expected cancellation")
         } catch {
             XCTAssertTrue(error is CancellationError)
@@ -116,7 +115,7 @@ final class GameAPIClientTests: XCTestCase {
         let noCredentialTransport = StubTransport(body: listBody(), status: 200)
         let noCredentialClient = GameAPIClient(credentialStore: StubCredentialStore(value: nil), transport: noCredentialTransport)
         do {
-            _ = try await noCredentialClient.fetchPage(category: .puzzle, since: "a", until: "b", page: 1, per: 1)
+            _ = try await noCredentialClient.fetchPage(category: .puzzle, page: 1, per: 1)
             XCTFail("Expected missing credential")
         } catch {
             XCTAssertEqual(error as? GameAPIError, .missingCredential)
