@@ -4,15 +4,19 @@ struct AppDependencies {
     let makeRootView: @MainActor () -> AnyView
     let credentialStore: any CredentialStoring
     let gameAPIClient: GameAPIClient
+    let gameCatalog: any GameCatalogProviding
 
     init(
         makeRootView: @escaping @MainActor () -> AnyView,
         credentialStore: any CredentialStoring = EncryptedCredentialStore(),
-        gameAPIClient: GameAPIClient? = nil
+        gameAPIClient: GameAPIClient? = nil,
+        gameCatalog: (any GameCatalogProviding)? = nil
     ) {
+        let resolvedAPIClient = gameAPIClient ?? GameAPIClient(credentialStore: credentialStore)
         self.makeRootView = makeRootView
         self.credentialStore = credentialStore
-        self.gameAPIClient = gameAPIClient ?? GameAPIClient(credentialStore: credentialStore)
+        self.gameAPIClient = resolvedAPIClient
+        self.gameCatalog = gameCatalog ?? GameCatalog(pageFetcher: resolvedAPIClient)
     }
 
     static var live: Self {

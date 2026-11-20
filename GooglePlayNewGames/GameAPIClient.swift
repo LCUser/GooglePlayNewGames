@@ -111,6 +111,16 @@ protocol GameAPITransport: Sendable {
     func data(for request: URLRequest) async throws -> (Data, URLResponse)
 }
 
+protocol GamePageFetching: Sendable {
+    func fetchPage(
+        category: GameCategory,
+        since: String,
+        until: String,
+        page: Int,
+        per: Int
+    ) async throws -> GamePageDTO
+}
+
 struct URLSessionGameAPITransport: GameAPITransport {
     let session: URLSession
 
@@ -123,7 +133,7 @@ struct URLSessionGameAPITransport: GameAPITransport {
     }
 }
 
-struct GameAPIClient: Sendable {
+struct GameAPIClient: GamePageFetching, Sendable {
     static let baseURL = URL(string: "https://playapi.info/api/v1")!
 
     private let credentialStore: any CredentialStoring

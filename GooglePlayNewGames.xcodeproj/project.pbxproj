@@ -15,6 +15,8 @@
 		A10000000000000000000007 /* CredentialStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000009 /* CredentialStoreTests.swift */; };
 		A10000000000000000000008 /* GameAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000010 /* GameAPIClient.swift */; };
 		A10000000000000000000009 /* GameAPIClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000011 /* GameAPIClientTests.swift */; };
+		A1000000000000000000000A /* GameCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000012 /* GameCatalog.swift */; };
+		A1000000000000000000000B /* GameCatalogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000013 /* GameCatalogTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +31,8 @@
 		B10000000000000000000009 /* CredentialStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialStoreTests.swift; sourceTree = "<group>"; };
 		B10000000000000000000010 /* GameAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAPIClient.swift; sourceTree = "<group>"; };
 		B10000000000000000000011 /* GameAPIClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAPIClientTests.swift; sourceTree = "<group>"; };
+		B10000000000000000000012 /* GameCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCatalog.swift; sourceTree = "<group>"; };
+		B10000000000000000000013 /* GameCatalogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCatalogTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +59,7 @@
 				B10000000000000000000004 /* GameDetailPlaceholderView.swift */,
 				B10000000000000000000008 /* CredentialStore.swift */,
 				B10000000000000000000010 /* GameAPIClient.swift */,
+				B10000000000000000000012 /* GameCatalog.swift */,
 			);
 			path = GooglePlayNewGames;
 			sourceTree = "<group>";
@@ -65,6 +70,7 @@
 				B10000000000000000000005 /* AppDependenciesTests.swift */,
 				B10000000000000000000009 /* CredentialStoreTests.swift */,
 				B10000000000000000000011 /* GameAPIClientTests.swift */,
+				B10000000000000000000013 /* GameCatalogTests.swift */,
 			);
 			path = GooglePlayNewGamesTests;
 			sourceTree = "<group>";
@@ -166,6 +172,7 @@
 				A10000000000000000000004 /* GameDetailPlaceholderView.swift in Sources */,
 				A10000000000000000000006 /* CredentialStore.swift in Sources */,
 				A10000000000000000000008 /* GameAPIClient.swift in Sources */,
+				A1000000000000000000000A /* GameCatalog.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +183,7 @@
 				A10000000000000000000005 /* AppDependenciesTests.swift in Sources */,
 				A10000000000000000000007 /* CredentialStoreTests.swift in Sources */,
 				A10000000000000000000009 /* GameAPIClientTests.swift in Sources */,
+				A1000000000000000000000B /* GameCatalogTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
