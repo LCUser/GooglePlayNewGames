@@ -1,7 +1,7 @@
 # API 接口规格
 
 - 文档编号：API-DOC-001
-- 状态：阶段 2 验证中
+- 状态：阶段 2 验证完成；Gate 2 已通过
 - 数据源候选：playapi.info Free 套餐
 - 官方文档：https://playapi.info/zh/api-docs.php
 
@@ -21,7 +21,7 @@
 - API 密钥不得写入仓库、文档、测试证据或日志。
 
 ## 已验证行为与限制
-- `/new` 的 `since`、`until` 日期范围可用；同日起止日期的样本查询返回该日记录。列表 `released` 为 UTC 时间戳，用户需求按设备本地日历日计算，仍需在阶段 3 明确日期换算规则。
+- `/new` 的 `since`、`until` 日期范围可用；同日起止日期的样本查询返回该日记录。列表 `released` 为 UTC 时间戳；阶段 4 技术方案须定义其与用户设备本地日历日的换算方式，并保持需求规定的日期边界。
 - `/new` 默认按 `released` 从新到旧返回；`page`、`per` 可用，实测 `per=100` 返回 100 条。单个样本条件下 `order=asc` 与 `order=desc` 返回相同首条记录。
 - 官方规格限制 `per` 为 1–100，单次查询最多可翻到第 10,000 条；`/new` 支持 `lang` 和 `sort`。通用排序规格包含 `order=asc|desc`，但本次 asc/desc 实测样本相同，未改变默认新到旧顺序。
 - `category` 接受具体类别 ID。`category=GAME` 实测返回 0 条；产品仅使用 `GAME_PUZZLE` 与 `GAME_CASUAL` 两个类别，不得请求或展示其他游戏类别。
